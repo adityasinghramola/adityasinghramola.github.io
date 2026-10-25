@@ -1,16 +1,19 @@
 ---
+import '@fontsource/press-start-2p/latin-400.css';
 import '../styles/global.css';
+import fontUrl from '@fontsource/press-start-2p/files/press-start-2p-latin-400-normal.woff2?url';
+import { sections } from '../lib/projects';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const site = 'Aditya Singh Ramola';
-const { title, description = 'Small projects and analyses on markets, money and policy, by Aditya Singh Ramola.' } = Astro.props;
+const site = "Aditya Ramola's portfolio";
+const { title, description = 'Code, games, art and finance analysis by Aditya Ramola.' } = Astro.props;
 const pageTitle = title ? `${title} | ${site}` : site;
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site);
 ---
 
 <!doctype html>
@@ -23,26 +26,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#111612" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#1d2b53" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href={fontUrl} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header class="site-head wrap">
-      <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}>Aditya Singh Ramola</a>
-      <nav aria-label="Main">
-        <a href="/" aria-current={path === '/' || path.startsWith('/projects') ? 'page' : undefined}>Projects</a>
-        <a href="/about" aria-current={path === '/about' ? 'page' : undefined}>About</a>
-        <a href="https://neuropolicycognita.org">Writing</a>
+    <header class="head wrap">
+      <a class="mark" href="/">Aditya Ramola's portfolio</a>
+      <nav aria-label="Sections">
+        {
+          Object.values(sections).map((s) => (
+            <a href={s.path} aria-current={path.startsWith(s.path) ? 'page' : undefined} style={`--c:${s.color}`}>
+              {s.name}
+            </a>
+          ))
+        }
+        <a href="/about/" aria-current={path.startsWith('/about') ? 'page' : undefined} style="--c:var(--yellow)">About</a>
       </nav>
     </header>
 
@@ -51,64 +52,51 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </main>
 
     <footer class="wrap">
-      <div class="site-foot">
-      <p>
-        Essays live on <a href="https://neuropolicycognita.org">NeuroPolicy Cognita</a>. Get in touch through its
-        <a href="https://neuropolicycognita.org/contact">contact page</a>.
-      </p>
-      <p class="small">Built with Astro, hosted on GitHub Pages.</p>
-      </div>
+      <p class="foot">Plain HTML, no tracking. Built with Astro, hosted on GitHub Pages.</p>
     </footer>
   </body>
 </html>
 
 <style>
-  .site-head {
+  .head {
     display: flex;
-    align-items: baseline;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 1rem 2rem;
-    flex-wrap: wrap;
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
-    font-family: var(--font-head);
   }
   .mark {
+    font-family: var(--pixel);
+    font-size: 0.75rem;
+    line-height: 1.6;
     color: var(--ink);
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: -0.01em;
   }
   nav {
     display: flex;
-    gap: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
   }
   nav a {
     color: var(--ink-2);
     text-decoration: none;
-    font-weight: 500;
-    padding: 0.2rem 0;
-    border-bottom: 2px solid transparent;
+    padding: 0.15rem 0;
+    border-bottom: var(--px) solid transparent;
   }
   nav a:hover {
     color: var(--ink);
   }
   nav a[aria-current='page'] {
     color: var(--ink);
-    border-bottom-color: var(--accent);
+    border-bottom-color: var(--c);
   }
-  .site-foot {
-    margin-top: 6rem;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-    border-top: 1px solid var(--rule);
+  .foot {
+    margin: 6rem 0 0;
+    padding: 1.5rem 0 3rem;
+    border-top: var(--px) dotted var(--line);
     color: var(--ink-2);
-    font-size: 0.95rem;
-  }
-  .site-foot .small {
-    font-family: var(--font-head);
-    font-size: 0.85rem;
-    margin: 0;
+    font-size: 0.875rem;
   }
 </style>

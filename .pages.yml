@@ -9,28 +9,36 @@ content:
     path: src/content/projects
     filename: '{fields.title}.md'
     view:
-      fields: [title, status, date]
+      fields: [title, category, date]
       primary: title
-      sort: [date, title]
       default:
         sort: date
         order: desc
     fields:
       - name: title
-        label: Title (write it as a question)
+        label: Title
         type: string
         required: true
       - name: summary
-        label: Short answer / where it stands
+        label: Summary
         type: text
         required: true
+      - name: category
+        label: Section
+        type: select
+        required: true
+        options:
+          values:
+            - value: code
+              label: Code & games
+            - value: art
+              label: Art
+            - value: finance
+              label: Finance
       - name: date
-        label: Started
+        label: Date
         type: date
         required: true
-      - name: updated
-        label: Last updated
-        type: date
       - name: status
         label: Status
         type: select
@@ -41,12 +49,8 @@ content:
             - value: done
               label: Done
         default: in-progress
-      - name: topics
-        label: Topics
-        type: string
-        list: true
-      - name: tools
-        label: Tools
+      - name: tags
+        label: Tags
         type: string
         list: true
       - name: links
@@ -59,14 +63,11 @@ content:
           - name: url
             type: string
       - name: cover
-        label: Cover image
+        label: Image (needed for every Art entry to show the gallery)
         type: image
       - name: coverAlt
-        label: Cover image description
+        label: Image description
         type: string
-      - name: featured
-        label: Featured
-        type: boolean
       - name: draft
         label: Hide (draft)
         type: boolean

@@ -1,0 +1,99 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Orb from '../../components/Orb.astro';
+import { getProjects, sections, formatDate } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const s = sections[data.category];
+const { Content } = await render(project);
+---
+
+<Base title={data.title} description={data.summary}>
+  <article class="wrap page">
+    <a class="back" href={s.path}>
+      <Orb color={s.color} size={14} />
+      {s.name}
+    </a>
+    <h1>{data.title}</h1>
+    <p class="meta">
+      {formatDate(data.date)}
+      <span class:list={['status', data.status]}>{data.status === 'done' ? 'Done' : 'In progress'}</span>
+      {data.tags.length > 0 && <span class="tags">{data.tags.join(', ')}</span>}
+    </p>
+
+    <p class="summary box">{data.summary}</p>
+
+    {
+      data.links.length > 0 && (
+        <ul class="links">
+          {data.links.map((l) => (
+            <li>
+              <a href={l.url}>{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="prose">
+      {data.cover && <img src={data.cover} alt={data.coverAlt ?? ''} />}
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page {
+    padding-top: clamp(2rem, 6vw, 3.5rem);
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  h1 {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 3.4vw, 1.6rem);
+    line-height: 1.55;
+    max-width: 32ch;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 1rem 0 0;
+    color: var(--ink-2);
+    font-size: 0.9rem;
+  }
+  .status.in-progress {
+    color: var(--yellow);
+  }
+  .status.done {
+    color: var(--green);
+  }
+  .summary {
+    margin: 2rem var(--px);
+    padding: 1.1rem 1.4rem;
+    max-width: var(--measure);
+    font-size: 1.05rem;
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .links a::before {
+    content: '> ';
+    color: var(--ink-2);
+  }
+</style>

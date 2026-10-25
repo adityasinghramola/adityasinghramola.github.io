@@ -2,43 +2,26 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="About" description="About Aditya Singh Ramola: finance graduate in Delhi working on small projects in markets, money and policy.">
-  <section class="wrap about">
+<Base title="About" description="About Aditya Ramola.">
+  <section class="wrap page">
     <h1>About</h1>
     <div class="prose">
-      <p class="first">
-        I'm Aditya Singh Ramola, a finance graduate based in Delhi. I'm most interested in how markets price things, how
-        people actually make money decisions, and how policy shifts both.
-      </p>
       <p>
-        This site is where I keep the small projects: a dataset I wanted to look at properly, a model I built to test an
-        idea, an analysis that started as a hunch. They're built in public, so some are finished and some are half way.
-        Each project page says which.
+        I'm Aditya Ramola, a finance graduate based in Delhi. This is where I put the things I make: code and games, art,
+        and analysis of markets and money.
       </p>
-      <p>
-        Longer essays on finance, politics, marketing and thinking live on
-        <a href="https://neuropolicycognita.org">NeuroPolicy Cognita</a>, my writing site.
-      </p>
-      <h2>Get in touch</h2>
-      <p>
-        If you want to talk about one of these projects, or have data I should look at, write to me through the
-        <a href="https://neuropolicycognita.org/contact">NeuroPolicy Cognita contact page</a>.
-      </p>
+      <p>Some entries are finished and some are still in progress. Each one says which.</p>
     </div>
   </section>
 </Base>
 
 <style>
-  .about {
-    padding-top: clamp(2.5rem, 8vw, 5rem);
+  .page {
+    padding-top: clamp(2rem, 7vw, 4rem);
   }
   h1 {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-  }
-  .first {
-    font-size: 1.25rem;
-    line-height: 1.55;
+    font-size: clamp(1rem, 3.6vw, 1.6rem);
+    color: var(--yellow);
+    margin-bottom: 1.75rem;
   }
 </style>

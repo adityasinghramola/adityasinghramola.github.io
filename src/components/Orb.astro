@@ -1,0 +1,30 @@
+---
+// Original pixel orb, drawn on an 8x8 grid. Color comes from the section.
+interface Props {
+  color: string;
+  size?: number;
+}
+const { color, size = 16 } = Astro.props;
+---
+
+<svg
+  class="orb"
+  viewBox="0 0 8 8"
+  width={size}
+  height={size}
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  style={`--orb:${color}`}
+>
+  <path fill="var(--ink-dark)" d="M2 0h4v1h1v1h1v4h-1v1h-1v1h-4v-1h-1v-1h-1v-4h1v-1h1z" />
+  <path fill="var(--orb)" d="M2 1h4v1h1v4h-1v1h-4v-1h-1v-4h1z" />
+  <path fill="var(--ink-dark)" opacity=".28" d="M5 5h1v1h-1zM4 6h2v1h-2zM6 3h1v3h-1z" />
+  <path fill="#fff1e8" d="M2 2h2v1h-1v1h-1z" />
+</svg>
+
+<style>
+  .orb {
+    flex: none;
+    image-rendering: pixelated;
+  }
+</style>

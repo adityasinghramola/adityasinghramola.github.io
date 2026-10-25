@@ -1,0 +1,85 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Orb from './Orb.astro';
+import { sections, formatDate } from '../lib/projects';
+
+interface Props {
+  items: CollectionEntry<'projects'>[];
+  empty: string;
+}
+const { items, empty } = Astro.props;
+---
+
+{
+  items.length === 0 ? (
+    <p class="empty box">{empty}</p>
+  ) : (
+    <ul class="list">
+      {items.map((p) => (
+        <li>
+          <a href={`/p/${p.id}/`} class="item">
+            <Orb color={sections[p.data.category].color} size={16} />
+            <span class="text">
+              <span class="title">{p.data.title}</span>
+              <span class="summary">{p.data.summary}</span>
+              <span class="meta">
+                {sections[p.data.category].name}, {formatDate(p.data.date)}
+                {p.data.status === 'in-progress' && <span class="wip">in progress</span>}
+              </span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 2px solid var(--line);
+    color: inherit;
+    text-decoration: none;
+  }
+  .item .orb {
+    margin-top: 0.3rem;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .title {
+    font-family: var(--pixel);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  .item:hover .title {
+    color: var(--yellow);
+  }
+  .summary {
+    color: var(--ink-2);
+    max-width: 64ch;
+  }
+  .meta {
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+  .wip {
+    margin-left: 0.75rem;
+    color: var(--yellow);
+  }
+  .empty {
+    padding: 1.25rem 1.5rem;
+    color: var(--ink-2);
+  }
+</style>

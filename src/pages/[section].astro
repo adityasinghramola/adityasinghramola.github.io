@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import Orb from '../components/Orb.astro';
+import ProjectList from '../components/ProjectList.astro';
+import { sections, getProjects, type SectionKey } from '../lib/projects';
+
+export function getStaticPaths() {
+  return (Object.keys(sections) as SectionKey[]).map((section) => ({ params: { section } }));
+}
+
+const key = Astro.params.section as SectionKey;
+const s = sections[key];
+const items = await getProjects(key);
+const gallery = key === 'art' && items.length > 0 && items.every((p) => p.data.cover);
+---
+
+<Base title={s.name} description={s.blurb}>
+  <section class="wrap page">
+    <h1 style={`--c:${s.color}`}><Orb color={s.color} size={28} />{s.name}</h1>
+    <p class="blurb">{s.blurb}</p>
+
+    {
+      gallery ? (
+        <ul class="gallery">
+          {items.map((p) => (
+            <li>
+              <a href={`/p/${p.id}/`}>
+                <img src={p.data.cover} alt={p.data.coverAlt ?? p.data.title} loading="lazy" decoding="async" />
+                <span>{p.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ProjectList items={items} empty="Nothing here yet. The first one goes up soon." />
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .page {
+    padding-top: clamp(2rem, 7vw, 4rem);
+  }
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: clamp(1rem, 3.6vw, 1.6rem);
+    color: var(--c);
+  }
+  .blurb {
+    margin: 1rem 0 2.5rem;
+    color: var(--ink-2);
+    max-width: 60ch;
+  }
+  .gallery {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1.5rem;
+  }
+  .gallery a {
+    display: block;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .gallery img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: var(--px) solid var(--line);
+  }
+  .gallery a:hover img {
+    border-color: var(--pink);
+  }
+  .gallery span {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: var(--pixel);
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+</style>

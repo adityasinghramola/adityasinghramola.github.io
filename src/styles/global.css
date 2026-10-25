@@ -34,7 +34,14 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  min-height: 100vh;
+  padding-bottom: 7rem;
+  /* 8-bit wallpaper: two sub-1KB tiles scaled 4x (made by scripts/make_wallpaper.py) */
+  background:
+    url('/bg/horizon.png') left bottom / 512px 160px repeat-x,
+    url('/bg/stars.png') 0 0 / 512px 512px repeat,
+    var(--bg);
+  image-rendering: pixelated;
   color: var(--ink);
   font-family: var(--mono);
   font-size: 1rem;
@@ -71,6 +78,7 @@ a:hover {
 img {
   max-width: 100%;
   height: auto;
+  image-rendering: auto;
 }
 img.pixel {
   image-rendering: pixelated;

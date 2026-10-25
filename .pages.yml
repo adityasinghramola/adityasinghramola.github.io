@@ -1,0 +1,76 @@
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    filename: '{fields.title}.md'
+    view:
+      fields: [title, status, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title (write it as a question)
+        type: string
+        required: true
+      - name: summary
+        label: Short answer / where it stands
+        type: text
+        required: true
+      - name: date
+        label: Started
+        type: date
+        required: true
+      - name: updated
+        label: Last updated
+        type: date
+      - name: status
+        label: Status
+        type: select
+        options:
+          values:
+            - value: in-progress
+              label: In progress
+            - value: done
+              label: Done
+        default: in-progress
+      - name: topics
+        label: Topics
+        type: string
+        list: true
+      - name: tools
+        label: Tools
+        type: string
+        list: true
+      - name: links
+        label: Links
+        type: object
+        list: true
+        fields:
+          - name: label
+            type: string
+          - name: url
+            type: string
+      - name: cover
+        label: Cover image
+        type: image
+      - name: coverAlt
+        label: Cover image description
+        type: string
+      - name: featured
+        label: Featured
+        type: boolean
+      - name: draft
+        label: Hide (draft)
+        type: boolean
+        default: false
+      - name: body
+        label: Write-up
+        type: rich-text

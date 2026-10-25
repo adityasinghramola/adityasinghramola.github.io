@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const site = 'Aditya Singh Ramola';
+const { title, description = 'Small projects and analyses on markets, money and policy, by Aditya Singh Ramola.' } = Astro.props;
+const pageTitle = title ? `${title} | ${site}` : site;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#f4f6f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111612" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head wrap">
+      <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}>Aditya Singh Ramola</a>
+      <nav aria-label="Main">
+        <a href="/" aria-current={path === '/' || path.startsWith('/projects') ? 'page' : undefined}>Projects</a>
+        <a href="/about" aria-current={path === '/about' ? 'page' : undefined}>About</a>
+        <a href="https://neuropolicycognita.org">Writing</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="wrap">
+      <div class="site-foot">
+      <p>
+        Essays live on <a href="https://neuropolicycognita.org">NeuroPolicy Cognita</a>. Get in touch through its
+        <a href="https://neuropolicycognita.org/contact">contact page</a>.
+      </p>
+      <p class="small">Built with Astro, hosted on GitHub Pages.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-family: var(--font-head);
+  }
+  .mark {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+  nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  nav a {
+    color: var(--ink-2);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.2rem 0;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover {
+    color: var(--ink);
+  }
+  nav a[aria-current='page'] {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .site-foot {
+    margin-top: 6rem;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-2);
+    font-size: 0.95rem;
+  }
+  .site-foot .small {
+    font-family: var(--font-head);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+</style>
